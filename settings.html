@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Settings - Engineering Collaboration App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="max-w-[390px] mx-auto bg-gray-50">
+    <!-- Top Navigation -->
+    <div class="bg-white px-4 py-3 flex items-center justify-between border-b">
+        <div class="flex items-center">
+            <i class="fas fa-arrow-left text-gray-600 mr-3"></i>
+            <h2 class="font-semibold">System Settings</h2>
+        </div>
+    </div>
+
+    <!-- Settings List -->
+    <div class="mt-4 bg-white divide-y">
+        <div class="p-4">
+            <h3 class="font-semibold text-gray-700 mb-3">Account Settings</h3>
+            <button class="w-full flex items-center justify-between py-3">
+                <div class="flex items-center">
+                    <i class="fas fa-user-circle text-gray-600 w-6"></i>
+                    <span class="ml-3">Personal Information</span>
+                </div>
+                <i class="fas fa-chevron-right text-gray-400"></i>
+            </button>
+            <button class="w-full flex items-center justify-between py-3">
+                <div class="flex items-center">
+                    <i class="fas fa-lock text-gray-600 w-6"></i>
+                    <span class="ml-3">Change Password</span>
+                </div>
+                <i class="fas fa-chevron-right text-gray-400"></i>
+            </button>
+        </div>
+
+        <div class="p-4">
+            <h3 class="font-semibold text-gray-700 mb-3">Notification Settings</h3>
+            <div class="flex items-center justify-between py-3">
+                <span>Message Notifications</span>
+                <label class="relative inline-flex items-center cursor-pointer">
+                    <input type="checkbox" class="sr-only peer" checked>
+                    <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                </label>
+            </div>
+            <div class="flex items-center justify-between py-3">
+                <span>Sound Alerts</span>
+                <label class="relative inline-flex items-center cursor-pointer">
+                    <input type="checkbox" class="sr-only peer" checked>
+                    <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                </label>
+            </div>
+        </div>
+
+        <div class="p-4">
+            <h3 class="font-semibold text-gray-700 mb-3">About App</h3>
+            <button class="w-full flex items-center justify-between py-3">
+                <span>Version Info</span>
+                <span class="text-gray-500 text-sm">v1.2.0</span>
+            </button>
+            <button class="w-full flex items-center justify-between py-3">
+                <span>User Agreement</span>
+                <i class="fas fa-chevron-right text-gray-400"></i>
+            </button>
+            <button class="w-full flex items-center justify-between py-3">
+                <span>Privacy Policy</span>
+                <i class="fas fa-chevron-right text-gray-400"></i>
+            </button>
+        </div>
+
+        <div class="p-4">
+            <button class="w-full text-red-500 py-3 text-center">
+                Log Out
+            </button>
+        </div>
+    </div>
+</body>
+</html>
+

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Document Generation - Engineering Collaboration App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="max-w-[390px] mx-auto bg-gray-50">
+    <!-- Top Navigation -->
+    <div class="bg-white px-4 py-3 flex items-center justify-between border-b">
+        <div class="flex items-center">
+            <i class="fas fa-arrow-left text-gray-600 mr-3"></i>
+            <h2 class="font-semibold">AI Document Assistant</h2>
+        </div>
+        <i class="fas fa-history text-gray-600"></i>
+    </div>
+
+    <!-- Main Content -->
+    <div class="p-4">
+        <!-- Project Selection -->
+        <div class="bg-white rounded-xl p-4 mb-4 shadow-sm">
+            <label class="block text-sm font-medium text-gray-700 mb-2">Select Project</label>
+            <select class="w-full p-3 border border-gray-300 rounded-lg text-sm">
+                <option>Commercial Complex Electrical Engineering</option>
+                <option>Smart Office Building Retrofit</option>
+                <option>Residential Community Water Supply & Drainage Engineering</option>
+            </select>
+        </div>
+
+        <!-- Document Type Selection -->
+        <div class="bg-white rounded-xl p-4 mb-4 shadow-sm">
+            <h3 class="font-semibold mb-3">Document Type</h3>
+            <div class="grid grid-cols-2 gap-3">
+                <button class="p-3 border-2 border-gray-200 rounded-lg text-center hover:border-blue-500">
+                    <i class="fas fa-file-alt text-2xl mb-2 text-blue-500"></i>
+                    <p class="text-sm">Inspection Report</p>
+                </button>
+                <button class="p-3 border-2 border-gray-200 rounded-lg text-center hover:border-blue-500">
+                    <i class="fas fa-tools text-2xl mb-2 text-green-500"></i>
+                    <p class="text-sm">Installation Guide</p>
+                </button>
+                <button class="p-3 border-2 border-gray-200 rounded-lg text-center hover:border-blue-500">
+                    <i class="fas fa-clipboard-check text-2xl mb-2 text-purple-500"></i>
+                    <p class="text-sm">Acceptance Form</p>
+                </button>
+                <button class="p-3 border-2 border-gray-200 rounded-lg text-center hover:border-blue-500">
+                    <i class="fas fa-chart-line text-2xl mb-2 text-orange-500"></i>
+                    <p class="text-sm">Progress Report</p>
+                </button>
+            </div>
+        </div>
+
+        <!-- Description Input -->
+        <div class="bg-white rounded-xl p-4 mb-4 shadow-sm">
+            <label class="block text-sm font-medium text-gray-700 mb-2">Project Description</label>
+            <textarea class="w-full p-3 border border-gray-300 rounded-lg text-sm" 
+                      rows="4" 
+                      placeholder="Please describe project requirements, e.g., Need an inspection report for distribution box installation including safety standard checks..."></textarea>
+        </div>
+
+        <!-- Generate Button -->
+        <button class="w-full bg-blue-500 text-white py-4 rounded-xl font-semibold shadow-lg">
+            <i class="fas fa-magic mr-2"></i>
+            Generate AI Document
+        </button>
+
+        <!-- Result Preview -->
+        <div class="mt-6 bg-white rounded-xl p-4 shadow-sm hidden" id="resultPreview">
+            <h3 class="font-semibold mb-3">Generated Result Preview</h3>
+            <div class="bg-gray-50 p-4 rounded-lg">
+                <h4 class="font-medium mb-2">Distribution Box Installation Inspection Report</h4>
+                <p class="text-sm text-gray-600 mb-3">Project: Commercial Complex Electrical Engineering</p>
+                
+                <div class="space-y-2 text-sm">
+                    <div class="flex justify-between">
+                        <span>Safety Check:</span>
+                        <span class="text-green-600">✓ Passed</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span>Wiring Standards:</span>
+                        <span class="text-green-600">✓ Meets Standard</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span>Insulation Test:</span>
+                        <span class="text-green-600">✓ Qualified</span>
+                    </div>
+                </div>
+                
+                <div class="mt-4 flex space-x-2">
+                    <button class="flex-1 bg-blue-500 text-white py-2 rounded-lg text-sm">
+                        <i class="fas fa-download mr-1"></i>Download PDF
+                    </button>
+                    <button class="flex-1 bg-gray-200 text-gray-700 py-2 rounded-lg text-sm">
+                        <i class="fas fa-edit mr-1"></i>Edit
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

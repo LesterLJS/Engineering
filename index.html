@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Engineering Collaboration App - Prototype Preview</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .iphone-frame {
+            width: 390px;
+            height: 844px;
+            border-radius: 47px;
+            box-shadow: 0 0 0 12px #1a1a1a, 0 0 0 14px #2a2a2a;
+            overflow: hidden;
+            position: relative;
+            background: #000;
+        }
+        .status-bar {
+            height: 44px;
+            background: #fff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 30px;
+            font-size: 15px;
+            font-weight: 600;
+        }
+        .preview-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto p-4">
+        <h1 class="text-3xl font-bold text-center mb-8">Engineering Collaboration App - High-Fidelity Prototype</h1>
+        
+        <div class="preview-grid">
+            <!-- Home Page Preview -->
+            <div class="flex flex-col items-center">
+                <h2 class="text-xl font-semibold mb-2">Home - Project Overview</h2>
+                <div class="iphone-frame">
+                    <iframe src="home.html" class="w-full h-full" frameborder="0"></iframe>
+                </div>
+            </div>
+            
+            <!-- Chat Page Preview -->
+            <div class="flex flex-col items-center">
+                <h2 class="text-xl font-semibold mb-2">Chat - Group Chat</h2>
+                <div class="iphone-frame">
+                    <iframe src="chat.html" class="w-full h-full" frameborder="0"></iframe>
+                </div>
+            </div>
+            
+            <!-- Project Page Preview -->
+            <div class="flex flex-col items-center">
+                <h2 class="text-xl font-semibold mb-2">Project - AI Document Generation</h2>
+                <div class="iphone-frame">
+                    <iframe src="project.html" class="w-full h-full" frameborder="0"></iframe>
+                </div>
+            </div>
+            
+            <!-- Upload Page Preview -->
+            <div class="flex flex-col items-center">
+                <h2 class="text-xl font-semibold mb-2">Upload - File Upload</h2>
+                <div class="iphone-frame">
+                    <iframe src="upload.html" class="w-full h-full" frameborder="0"></iframe>
+                </div>
+            </div>
+            
+            <!-- Group Settings Page Preview -->
+            <div class="flex flex-col items-center">
+                <h2 class="text-xl font-semibold mb-2">Group Settings - Group Management</h2>
+                <div class="iphone-frame">
+                    <iframe src="group-settings.html" class="w-full h-full" frameborder="0"></iframe>
+                </div>
+            </div>
+            
+            <!-- Profile Page Preview -->
+            <div class="flex flex-col items-center">
+                <h2 class="text-xl font-semibold mb-2">Profile - Personal Information</h2>
+                <div class="iphone-frame">
+                    <iframe src="profile.html" class="w-full h-full" frameborder="0"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

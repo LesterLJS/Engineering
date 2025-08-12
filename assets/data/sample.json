@@ -1,0 +1,87 @@
+{
+  "projects": [
+    {
+      "id": 1,
+      "name": "Commercial Complex Electrical Engineering",
+      "location": "Pudong New Area, Shanghai",
+      "progress": 75,
+      "status": "In Progress",
+      "startDate": "2024-01-15",
+      "endDate": "2024-12-31",
+      "manager": "Engineer Zhang",
+      "members": [
+        {
+          "id": 1,
+          "name": "Engineer Zhang",
+          "role": "Team Leader",
+          "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=50&h=50&fit=crop&crop=face"
+        },
+        {
+          "id": 2,
+          "name": "Master Li",
+          "role": "Senior Electrician",
+          "avatar": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=50&h=50&fit=crop&crop=face"
+        },
+        {
+          "id": 3,
+          "name": "Master Wang",
+          "role": "Electrician",
+          "avatar": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=50&h=50&fit=crop&crop=face"
+        }
+      ],
+      "recentUploads": [
+        {
+          "id": 1,
+          "filename": "Distribution Box Installation Photo.jpg",
+          "uploader": "Master Li",
+          "uploadTime": "2024-03-15 14:30",
+          "size": "2.3MB",
+          "thumbnail": "https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=200&h=150&fit=crop"
+        },
+        {
+          "id": 2,
+          "filename": "Inspection Report.pdf",
+          "uploader": "AI Generated",
+          "uploadTime": "2024-03-15 14:40",
+          "size": "1.1MB",
+          "thumbnail": null
+        }
+      ]
+    }
+  ],
+  "chatGroups": [
+    {
+      "id": 1,
+      "name": "Electricians",
+      "description": "Electrical Engineering Special Team",
+      "members": 8,
+      "unread": 3,
+      "lastMessage": "On-site cable laying completed, please inspect",
+      "lastMessageTime": "14:32"
+    },
+    {
+      "id": 2,
+      "name": "Plumbing",
+      "description": "Water Supply and Drainage Engineering Team",
+      "members": 5,
+      "unread": 0,
+      "lastMessage": "Pipeline pressure test completed",
+      "lastMessageTime": "Yesterday"
+    }
+  ],
+  "userRoles": {
+    "leader": {
+      "name": "Team Leader",
+      "permissions": ["manage_members", "upload_files", "delete_messages", "edit_project"]
+    },
+    "member": {
+      "name": "Member",
+      "permissions": ["send_messages", "upload_images", "view_documents"]
+    },
+    "ceo": {
+      "name": "Project Manager",
+      "permissions": ["all_permissions"]
+    }
+  }
+}
+
