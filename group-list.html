@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Group List - Engineering Collaboration App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            max-width: 390px;
+            margin: 0 auto;
+            background: #f5f5f5;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+        }
+        .ios-status-bar {
+            background: #fff;
+            height: 44px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 24px;
+            font-size: 15px;
+            font-weight: 600;
+            border-bottom: 1px solid #e5e5e5;
+        }
+        .bottom-tab-bar {
+            position: fixed;
+            bottom: 0;
+            width: 390px;
+            background: #fff;
+            border-top: 1px solid #e5e5e5;
+            display: flex;
+            justify-content: space-around;
+            padding: 8px 0;
+        }
+        .group-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+        .group-card:hover {
+            transform: translateY(-1px);
+        }
+        .search-input {
+            background: #f8f9fa;
+            border: none;
+            border-radius: 20px;
+            padding: 8px 16px;
+            font-size: 14px;
+        }
+        .search-input:focus {
+            outline: none;
+            background: #e9ecef;
+        }
+    </style>
+</head>
+<body>
+    <!-- iOS Status Bar -->
+    <div class="ios-status-bar">
+        <span>9:41</span>
+        <div class="flex items-center space-x-1">
+            <i class="fas fa-signal"></i>
+            <i class="fas fa-wifi"></i>
+            <i class="fas fa-battery-full"></i>
+        </div>
+    </div>
+
+    <!-- Top Navigation -->
+    <div class="bg-white px-4 py-3 flex items-center justify-between">
+        <h1 class="text-xl font-bold">Group List</h1>
+        <div class="flex items-center space-x-3">
+            <button class="text-blue-500" onclick="createNewGroup()">
+                <i class="fas fa-plus-circle text-xl"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Search Bar -->
+    <div class="bg-white px-4 py-2">
+        <div class="relative">
+            <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+            <input type="text" 
+                   id="searchInput" 
+                   placeholder="Search groups..." 
+                   class="search-input w-full pl-10"
+                   oninput="filterGroups()">
+        </div>
+    </div>
+
+    <!-- Group List -->
+    <div class="p-4 space-y-3" id="groupList">
+        <!-- Group cards will be generated dynamically via JavaScript -->
+    </div>
+
+    <!-- Bottom Navigation Bar -->
+    <div class="bottom-tab-bar">
+        <div class="flex flex-col items-center text-gray-400" onclick="location.href='home.html'">
+            <i class="fas fa-home"></i>
+            <span class="text-xs mt-1">Home</span>
+        </div>
+        <div class="flex flex-col items-center text-blue-500">
+            <i class="fas fa-users"></i>
+            <span class="text-xs mt-1">Groups</span>
+        </div>
+        <div class="flex flex-col items-center text-gray-400" onclick="location.href='chat.html'">
+            <i class="fas fa-comments"></i>
+            <span class="text-xs mt-1">Chat</span>
+        </div>
+        <div class="flex flex-col items-center text-gray-400" onclick="location.href='upload.html'">
+            <i class="fas fa-cloud-upload-alt"></i>
+            <span class="text-xs mt-1">Upload</span>
+        </div>
+        <div class="flex flex-col items-center text-gray-400" onclick="location.href='settings.html'">
+            <i class="fas fa-cog"></i>
+            <span class="text-xs mt-1">Settings</span>
+        </div>
+    </div>
+
+    <script>
+        // Group data
+        const groups = [
+            {
+                id: 1,
+                name: "Electrician Team",
+                description: "Electrical engineering specialist team",
+                members: 8,
+                unread: 3,
+                lastMessage: "On-site cable laying completed, please inspect",
+                lastMessageTime: "14:32",
+                avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=50&h=50&fit=crop&crop=face"
+            },
+            {
+                id: 2,
+                name: "Plumbing Team",
+                description: "Water supply and drainage engineering team",
+                members: 5,
+                unread: 0,
+                lastMessage: "Pipeline pressure test completed",
+                lastMessageTime: "Yesterday",
+                avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=50&h=50&fit=crop&crop=face"
+            },
+            {
+                id: 3,
+                name: "Project Manager Group",
+                description: "Project progress coordination group",
+                members: 12,
+                unread: 5,
+                lastMessage: "This week's progress report updated",
+                lastMessageTime: "10:15",
+                avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=50&h=50&fit=crop&crop=face"
+            },
+            {
+                id: 4,
+                name: "Design Team",
+                description: "Architecture design and planning",
+                members: 6,
+                unread: 1,
+                lastMessage: "New drawings uploaded, please review",
+                lastMessageTime: "09:45",
+                avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=50&h=50&fit=crop&crop=face"
+            }
+        ];
+
+        // Render group list
+        function renderGroups(groupsToRender) {
+            const groupList = document.getElementById('groupList');
+            groupList.innerHTML = '';
+
+            groupsToRender.forEach(group => {
+                const groupCard = createGroupCard(group);
+                groupList.appendChild(groupCard);
+            });
+        }
+
+        // Create a group card
+        function createGroupCard(group) {
+            const card = document.createElement('div');
+            card.className = 'group-card p-4';
+            card.innerHTML = `
+                <div class="flex items-center space-x-3">
+                    <img src="${group.avatar}" 
+                         alt="${group.name}" 
+                         class="w-12 h-12 rounded-full">
+                    <div class="flex-1">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h3 class="font-semibold text-gray-900">${group.name}</h3>
+                                <p class="text-sm text-gray-600">${group.description}</p>
+                            </div>
+                            ${group.unread > 0 ? 
+                                `<span class="bg-red-500 text-white text-xs rounded-full px-2 py-1">${group.unread}</span>` : 
+                                ''}
+                        </div>
+                        <div class="flex justify-between items-center mt-2">
+                            <div class="flex items-center space-x-4 text-sm text-gray-500">
+                                <span><i class="fas fa-users"></i> ${group.members} members</span>
+                                <span>${group.lastMessageTime}</span>
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-700 mt-1">${group.lastMessage}</p>
+                    </div>
+                </div>
+            `;
+            
+            // Add click event
+            card.addEventListener('click', () => {
+                enterGroup(group.id);
+            });
+            
+            return card;
+        }
+
+        // Enter a group
+        function enterGroup(groupId) {
+            console.log(`Enter group: ${groupId}`);
+            // Jump to group chat page
+            location.href = `chat.html?group=${groupId}`;
+        }
+
+        // Filter groups
+        function filterGroups() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const filtered = groups.filter(group => 
+                group.name.toLowerCase().includes(searchTerm) ||
+                group.description.toLowerCase().includes(searchTerm)
+            );
+            renderGroups(filtered);
+        }
+
+        // Create new group
+        function createNewGroup() {
+            console.log('Create new group');
+            // Jump to create group page
+            location.href = 'new-project.html';
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            renderGroups(groups);
+        });
+    </script>
+</body>
+</html>
