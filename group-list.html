@@ -1,245 +1,296 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Group List - Engineering Collaboration App</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        body {
-            max-width: 390px;
-            margin: 0 auto;
-            background: #f5f5f5;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
-        }
-        .ios-status-bar {
-            background: #fff;
-            height: 44px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 24px;
-            font-size: 15px;
-            font-weight: 600;
-            border-bottom: 1px solid #e5e5e5;
-        }
-        .bottom-tab-bar {
-            position: fixed;
-            bottom: 0;
-            width: 390px;
-            background: #fff;
-            border-top: 1px solid #e5e5e5;
-            display: flex;
-            justify-content: space-around;
-            padding: 8px 0;
-        }
-        .group-card {
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            transition: transform 0.2s;
-        }
-        .group-card:hover {
-            transform: translateY(-1px);
-        }
-        .search-input {
-            background: #f8f9fa;
-            border: none;
-            border-radius: 20px;
-            padding: 8px 16px;
-            font-size: 14px;
-        }
-        .search-input:focus {
-            outline: none;
-            background: #e9ecef;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Group List - Engineering Collaboration App</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      max-width: 390px;
+      margin: 0 auto;
+      background: #f5f5f5;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+    }
+    .ios-status-bar {
+      background: #fff;
+      height: 44px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 24px;
+      font-size: 15px;
+      font-weight: 600;
+      border-bottom: 1px solid #e5e5e5;
+    }
+    .bottom-tab-bar {
+      position: fixed;
+      bottom: 0;
+      width: 390px;
+      background: #fff;
+      border-top: 1px solid #e5e5e5;
+      display: flex;
+      justify-content: space-around;
+      padding: 8px 0;
+      z-index: 30; /* 让弹窗能盖过底栏 */
+    }
+    .group-card {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      transition: transform 0.2s;
+    }
+    .group-card:hover { transform: translateY(-1px); }
+    .search-input {
+      background: #f8f9fa; border: none; border-radius: 20px; padding: 8px 16px; font-size: 14px;
+    }
+    .search-input:focus { outline: none; background: #e9ecef; }
+  </style>
 </head>
 <body>
-    <!-- iOS Status Bar -->
-    <div class="ios-status-bar">
-        <span>9:41</span>
-        <div class="flex items-center space-x-1">
-            <i class="fas fa-signal"></i>
-            <i class="fas fa-wifi"></i>
-            <i class="fas fa-battery-full"></i>
-        </div>
+  <!-- iOS Status Bar -->
+  <div class="ios-status-bar">
+    <span>9:41</span>
+    <div class="flex items-center space-x-1">
+      <i class="fas fa-signal"></i>
+      <i class="fas fa-wifi"></i>
+      <i class="fas fa-battery-full"></i>
     </div>
+  </div>
 
-    <!-- Top Navigation -->
-    <div class="bg-white px-4 py-3 flex items-center justify-between">
-        <h1 class="text-xl font-bold">Group List</h1>
+  <!-- Top Navigation -->
+  <div class="bg-white px-4 py-3 flex items-center justify-between">
+    <h1 class="text-xl font-bold">Group List</h1>
+    <div class="flex items-center space-x-3">
+      <!-- 保留原函数名，但内部不再跳转，而是打开弹窗 -->
+      <button class="text-blue-500" onclick="createNewGroup()" aria-haspopup="dialog" aria-controls="createGroupSheet" aria-expanded="false">
+        <i class="fas fa-plus-circle text-xl"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Search Bar -->
+  <div class="bg-white px-4 py-2">
+    <div class="relative">
+      <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+      <input type="text" id="searchInput" placeholder="Search groups..." class="search-input w-full pl-10" oninput="filterGroups()">
+    </div>
+  </div>
+
+  <!-- Group List -->
+  <div class="p-4 space-y-3" id="groupList"></div>
+
+  <!-- Bottom Navigation Bar -->
+  <div class="bottom-tab-bar">
+    <div class="flex flex-col items-center text-gray-400" onclick="location.href='home-projectoverview.html'">
+      <i class="fas fa-home"></i><span class="text-xs mt-1">Home</span>
+    </div>
+    <div class="flex flex-col items-center text-blue-500">
+      <i class="fas fa-users"></i><span class="text-xs mt-1">Groups</span>
+    </div>
+    <div class="flex flex-col items-center text-gray-400" onclick="location.href='chat.html'">
+      <i class="fas fa-comments"></i><span class="text-xs mt-1">Chat</span>
+    </div>
+    <div class="flex flex-col items-center text-gray-400" onclick="location.href='upload.html'">
+      <i class="fas fa-cloud-upload-alt"></i><span class="text-xs mt-1">Upload</span>
+    </div>
+    <div class="flex flex-col items-center text-gray-400" onclick="location.href='settings.html'">
+      <i class="fas fa-cog"></i><span class="text-xs mt-1">Settings</span>
+    </div>
+  </div>
+
+  <!-- ===== Create Group Bottom Sheet（新增） ===== -->
+  <div id="createGroupSheet" class="fixed inset-0 z-[60] hidden" role="dialog" aria-modal="true">
+    <!-- 遮罩 -->
+    <div class="absolute inset-0 bg-black/40" data-close></div>
+
+    <!-- 底部弹窗 -->
+    <div class="absolute bottom-0 left-0 right-0 bg-white rounded-t-2xl shadow-xl p-4 max-h-[80vh] overflow-y-auto">
+      <div class="flex items-center justify-between mb-3">
+        <h2 class="text-lg font-semibold">Create Group</h2>
+        <button class="p-2 text-gray-500" data-close aria-label="Close">&times;</button>
+      </div>
+
+      <form id="createGroupForm" class="space-y-3" onsubmit="submitCreateGroup(event)">
+        <div>
+          <label class="text-sm font-medium">Group name <span class="text-red-500">*</span></label>
+          <input id="cg-name" type="text" required
+                 class="mt-1 w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                 placeholder="e.g., Electricians">
+        </div>
+
+        <div>
+          <label class="text-sm font-medium">Description</label>
+          <textarea id="cg-desc" rows="2"
+                    class="mt-1 w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="What is this group for?"></textarea>
+        </div>
+
+        <div>
+          <label class="text-sm font-medium">Privacy</label>
+          <div class="mt-1 flex gap-4">
+            <label class="flex items-center gap-2">
+              <input type="radio" name="cg-privacy" value="private" checked>
+              <span class="text-sm">Private</span>
+            </label>
+            <label class="flex items-center gap-2">
+              <input type="radio" name="cg-privacy" value="public">
+              <span class="text-sm">Public</span>
+            </label>
+          </div>
+        </div>
+
+        <div>
+          <label class="text-sm font-medium">Members count (optional)</label>
+          <input id="cg-membersCount" type="number" min="0" step="1"
+                 class="mt-1 w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                 placeholder="e.g., 5">
+        </div>
+
+        <div class="flex items-center justify-end gap-3 pt-2">
+          <button type="button" class="px-3 py-2 text-gray-600" data-close>Cancel</button>
+          <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-lg">Create</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <!-- ===== /Bottom Sheet ===== -->
+
+  <script>
+    // ===== 原有数据 =====
+    const groups = [
+      { id: 1, name: "Electrician Team", description: "Electrical engineering specialist team", members: 8, unread: 3, lastMessage: "On-site cable laying completed, please inspect", lastMessageTime: "14:32", avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=50&h=50&fit=crop&crop=face" },
+      { id: 2, name: "Plumbing Team", description: "Water supply and drainage engineering team", members: 5, unread: 0, lastMessage: "Pipeline pressure test completed", lastMessageTime: "Yesterday", avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=50&h=50&fit=crop&crop=face" },
+      { id: 3, name: "Project Manager Group", description: "Project progress coordination group", members: 12, unread: 5, lastMessage: "This week's progress report updated", lastMessageTime: "10:15", avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=50&h=50&fit=crop&crop=face" },
+      { id: 4, name: "Design Team", description: "Architecture design and planning", members: 6, unread: 1, lastMessage: "New drawings uploaded, please review", lastMessageTime: "09:45", avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=50&h=50&fit=crop&crop=face" }
+    ];
+
+    // ===== 渲染列表（保留你原逻辑） =====
+    function renderGroups(groupsToRender) {
+      const groupList = document.getElementById('groupList');
+      groupList.innerHTML = '';
+      groupsToRender.forEach(group => {
+        const groupCard = createGroupCard(group);
+        groupList.appendChild(groupCard);
+      });
+    }
+
+    function createGroupCard(group) {
+      const card = document.createElement('div');
+      card.className = 'group-card p-4';
+      card.innerHTML = `
         <div class="flex items-center space-x-3">
-            <button class="text-blue-500" onclick="createNewGroup()">
-                <i class="fas fa-plus-circle text-xl"></i>
-            </button>
+          <img src="${group.avatar}" alt="${group.name}" class="w-12 h-12 rounded-full">
+          <div class="flex-1">
+            <div class="flex justify-between items-start">
+              <div>
+                <h3 class="font-semibold text-gray-900">${group.name}</h3>
+                <p class="text-sm text-gray-600">${group.description}</p>
+              </div>
+              ${group.unread > 0 ? `<span class="bg-red-500 text-white text-xs rounded-full px-2 py-1">${group.unread}</span>` : ''}
+            </div>
+            <div class="flex justify-between items-center mt-2">
+              <div class="flex items-center space-x-4 text-sm text-gray-500">
+                <span><i class="fas fa-users"></i> ${group.members} members</span>
+                <span>${group.lastMessageTime}</span>
+              </div>
+            </div>
+            <p class="text-sm text-gray-700 mt-1">${group.lastMessage}</p>
+          </div>
         </div>
-    </div>
+      `;
+      card.addEventListener('click', () => enterGroup(group.id));
+      return card;
+    }
 
-    <!-- Search Bar -->
-    <div class="bg-white px-4 py-2">
-        <div class="relative">
-            <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
-            <input type="text" 
-                   id="searchInput" 
-                   placeholder="Search groups..." 
-                   class="search-input w-full pl-10"
-                   oninput="filterGroups()">
-        </div>
-    </div>
+    function enterGroup(groupId) {
+      // 跳转进群聊（保留）
+      location.href = `chat.html?group=${groupId}`;
+    }
 
-    <!-- Group List -->
-    <div class="p-4 space-y-3" id="groupList">
-        <!-- Group cards will be generated dynamically via JavaScript -->
-    </div>
+    function filterGroups() {
+      const v = document.getElementById('searchInput').value.toLowerCase();
+      const filtered = groups.filter(g => g.name.toLowerCase().includes(v) || g.description.toLowerCase().includes(v));
+      renderGroups(filtered);
+    }
 
-    <!-- Bottom Navigation Bar -->
-    <div class="bottom-tab-bar">
-        <div class="flex flex-col items-center text-gray-400" onclick="location.href='home.html'">
-            <i class="fas fa-home"></i>
-            <span class="text-xs mt-1">Home</span>
-        </div>
-        <div class="flex flex-col items-center text-blue-500">
-            <i class="fas fa-users"></i>
-            <span class="text-xs mt-1">Groups</span>
-        </div>
-        <div class="flex flex-col items-center text-gray-400" onclick="location.href='chat.html'">
-            <i class="fas fa-comments"></i>
-            <span class="text-xs mt-1">Chat</span>
-        </div>
-        <div class="flex flex-col items-center text-gray-400" onclick="location.href='upload.html'">
-            <i class="fas fa-cloud-upload-alt"></i>
-            <span class="text-xs mt-1">Upload</span>
-        </div>
-        <div class="flex flex-col items-center text-gray-400" onclick="location.href='settings.html'">
-            <i class="fas fa-cog"></i>
-            <span class="text-xs mt-1">Settings</span>
-        </div>
-    </div>
+    // ====== 新增：悬浮创建 Group 逻辑 ======
+    function createNewGroup() { // 保留原入口名，改为打开弹窗
+      openCreateGroupSheet();
+    }
 
-    <script>
-        // Group data
-        const groups = [
-            {
-                id: 1,
-                name: "Electrician Team",
-                description: "Electrical engineering specialist team",
-                members: 8,
-                unread: 3,
-                lastMessage: "On-site cable laying completed, please inspect",
-                lastMessageTime: "14:32",
-                avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=50&h=50&fit=crop&crop=face"
-            },
-            {
-                id: 2,
-                name: "Plumbing Team",
-                description: "Water supply and drainage engineering team",
-                members: 5,
-                unread: 0,
-                lastMessage: "Pipeline pressure test completed",
-                lastMessageTime: "Yesterday",
-                avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=50&h=50&fit=crop&crop=face"
-            },
-            {
-                id: 3,
-                name: "Project Manager Group",
-                description: "Project progress coordination group",
-                members: 12,
-                unread: 5,
-                lastMessage: "This week's progress report updated",
-                lastMessageTime: "10:15",
-                avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=50&h=50&fit=crop&crop=face"
-            },
-            {
-                id: 4,
-                name: "Design Team",
-                description: "Architecture design and planning",
-                members: 6,
-                unread: 1,
-                lastMessage: "New drawings uploaded, please review",
-                lastMessageTime: "09:45",
-                avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=50&h=50&fit=crop&crop=face"
-            }
-        ];
+    function openCreateGroupSheet() {
+      const sheet = document.getElementById('createGroupSheet');
+      sheet.classList.remove('hidden');
+      document.querySelector('[aria-controls="createGroupSheet"]').setAttribute('aria-expanded', 'true');
+      document.body.classList.add('overflow-hidden');
+      setTimeout(() => document.getElementById('cg-name').focus(), 0);
+    }
 
-        // Render group list
-        function renderGroups(groupsToRender) {
-            const groupList = document.getElementById('groupList');
-            groupList.innerHTML = '';
+    function closeCreateGroupSheet() {
+      const sheet = document.getElementById('createGroupSheet');
+      sheet.classList.add('hidden');
+      document.querySelector('[aria-controls="createGroupSheet"]').setAttribute('aria-expanded', 'false');
+      document.body.classList.remove('overflow-hidden');
+    }
 
-            groupsToRender.forEach(group => {
-                const groupCard = createGroupCard(group);
-                groupList.appendChild(groupCard);
-            });
-        }
+    // 关闭：点击遮罩或“×”、Esc
+    document.addEventListener('click', (e) => {
+      if (e.target.matches('#createGroupSheet [data-close], #createGroupSheet [data-close] *')) closeCreateGroupSheet();
+      const overlay = document.querySelector('#createGroupSheet > .absolute.inset-0');
+      if (e.target === overlay) closeCreateGroupSheet();
+    });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeCreateGroupSheet(); });
 
-        // Create a group card
-        function createGroupCard(group) {
-            const card = document.createElement('div');
-            card.className = 'group-card p-4';
-            card.innerHTML = `
-                <div class="flex items-center space-x-3">
-                    <img src="${group.avatar}" 
-                         alt="${group.name}" 
-                         class="w-12 h-12 rounded-full">
-                    <div class="flex-1">
-                        <div class="flex justify-between items-start">
-                            <div>
-                                <h3 class="font-semibold text-gray-900">${group.name}</h3>
-                                <p class="text-sm text-gray-600">${group.description}</p>
-                            </div>
-                            ${group.unread > 0 ? 
-                                `<span class="bg-red-500 text-white text-xs rounded-full px-2 py-1">${group.unread}</span>` : 
-                                ''}
-                        </div>
-                        <div class="flex justify-between items-center mt-2">
-                            <div class="flex items-center space-x-4 text-sm text-gray-500">
-                                <span><i class="fas fa-users"></i> ${group.members} members</span>
-                                <span>${group.lastMessageTime}</span>
-                            </div>
-                        </div>
-                        <p class="text-sm text-gray-700 mt-1">${group.lastMessage}</p>
-                    </div>
-                </div>
-            `;
-            
-            // Add click event
-            card.addEventListener('click', () => {
-                enterGroup(group.id);
-            });
-            
-            return card;
-        }
+    // 提交创建
+    function submitCreateGroup(ev) {
+      ev.preventDefault();
+      const name = document.getElementById('cg-name').value.trim();
+      const desc = document.getElementById('cg-desc').value.trim();
+      const membersCount = parseInt(document.getElementById('cg-membersCount').value || '0', 10);
+      if (!name) return;
 
-        // Enter a group
-        function enterGroup(groupId) {
-            console.log(`Enter group: ${groupId}`);
-            // Jump to group chat page
-            location.href = `chat.html?group=${groupId}`;
-        }
+      const now = new Date();
+      const hh = String(now.getHours()).padStart(2,'0');
+      const mm = String(now.getMinutes()).padStart(2,'0');
 
-        // Filter groups
-        function filterGroups() {
-            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-            const filtered = groups.filter(group => 
-                group.name.toLowerCase().includes(searchTerm) ||
-                group.description.toLowerCase().includes(searchTerm)
-            );
-            renderGroups(filtered);
-        }
+      const newGroup = {
+        id: Date.now(),
+        name,
+        description: desc || 'No description',
+        members: Number.isFinite(membersCount) ? membersCount : 0,
+        unread: 0,
+        lastMessage: 'Group created',
+        lastMessageTime: `${hh}:${mm}`,
+        avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=50&h=50&fit=crop&crop=face"
+      };
 
-        // Create new group
-        function createNewGroup() {
-            console.log('Create new group');
-            // Jump to create group page
-            location.href = 'new-project.html';
-        }
+      // 插到最前面并重新渲染“全部”
+      groups.unshift(newGroup);
+      document.getElementById('searchInput').value = '';
+      renderGroups(groups);
 
-        // Initialize
-        document.addEventListener('DOMContentLoaded', function() {
-            renderGroups(groups);
-        });
-    </script>
+      // 重置并关闭
+      ev.target.reset();
+      closeCreateGroupSheet();
+      showToast('Group created');
+    }
+
+    function showToast(msg) {
+      const t = document.createElement('div');
+      t.className = 'fixed bottom-28 left-1/2 -translate-x-1/2 z-[70] bg-black text-white text-sm px-3 py-2 rounded-full opacity-0 transition-opacity';
+      t.textContent = msg;
+      document.body.appendChild(t);
+      requestAnimationFrame(() => { t.classList.remove('opacity-0'); t.classList.add('opacity-90'); });
+      setTimeout(() => { t.classList.add('opacity-0'); setTimeout(() => t.remove(), 300); }, 1500);
+    }
+
+    // 初始化
+    document.addEventListener('DOMContentLoaded', () => { renderGroups(groups); }); 
+    setTimeout(() => enterGroup(newGroup.id), 0);
+
+  </script>
 </body>
 </html>
+
